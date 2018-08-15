@@ -13,13 +13,15 @@ InfiniteScroller.Preload.prototype = {
     this.load.setPreloadSprite(this.preloadBar);
 
     //load game assets
-    // this.load.spritesheet('dog', 'http://localhost:5001/resources/dog_walk.png', 122, 92, 2);
     this.load.image('cart', 'http://localhost:5001/resources/cart.svg');
     // add fruit
-    this.load.spritesheet('fruit', 'http://localhost:5001/resources/fruit.png', 55, 67, 32)
+    this.load.image('apple', 'http://localhost:5001/resources/apple.png');
+    this.load.image('cherry', 'http://localhost:5001/resources/cherry.png');
+    this.load.image('strawberry', 'http://localhost:5001/resources/strawberry.png');
+    this.load.image('pear', 'http://localhost:5001/resources/pear.png');
+
+    // add the floor
     this.load.image('ground', 'http://localhost:5001/resources/ground.png');
-    // this.load.image('grass', 'http://localhost:5001/resources/grassCopy.png');
-    
   },
   create: function() {
     this.state.start('Game');

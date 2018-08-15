@@ -15,13 +15,20 @@ InfiniteScroller.Game.prototype = {
     // adjust the position of the sprite
 
     // game height is 420. game width is 746.
-    this.cherry = this.game.add.sprite(this.game.width - 100, this.game.height - 330, 'fruit');
+    this.cherry = this.game.add.sprite(this.game.width - 10, this.game.height - 330, 'cherry');
+    this.strawberry = this.game.add.sprite(this.game.width + 1000, this.game.height - 230, 'strawberry');
+    this.pear = this.game.add.sprite(this.game.width + 500, this.game.height - 270, 'pear');
     this.ground = this.add.tileSprite(0,this.game.height-70,this.game.world.width,70,'ground');
+    
+    // scale the sprites down to a much better size
+    this.cherry.scale.setTo(0.1, 0.1);
+    this.strawberry.scale.setTo(0.1, 0.1);
+    this.pear.scale.setTo(0.08, 0.08);
+
     
     //create player and walk animation
     this.player = this.game.add.sprite(this.game.width/4, this.game.height-90, 'cart');
     this.player.scale.setTo(.20,.20)
-    // this.player.animations.add('walk');
     
     //put everything in the correct order (the grass will be camoflauge),
     //but the toy mounds have to be above that to be seen, but behind the
@@ -32,6 +39,8 @@ InfiniteScroller.Game.prototype = {
 
     //enable physics on the player and ground
     this.game.physics.arcade.enable(this.cherry);
+    this.game.physics.arcade.enable(this.strawberry);
+    this.game.physics.arcade.enable(this.pear);
     this.game.physics.arcade.enable(this.player);
     this.game.physics.arcade.enable(this.ground);
 
@@ -68,24 +77,24 @@ InfiniteScroller.Game.prototype = {
     
     //stats
     // var style1 = { font: "20px Arial", fill: "#ff0"};
-    // var t1 = this.game.add.text(10, 20, "Points:", style1);
     // var t2 = this.game.add.text(this.game.width-300, 20, "Remaining Flea Scratches:", style1);
     // t1.fixedToCamera = true;
     // t2.fixedToCamera = true;
-
-    // var style2 = { font: "26px Arial", fill: "#00ff00"};
-    // this.pointsText = this.game.add.text(80, 18, "", style2);
-    // this.fleasText = this.game.add.text(this.game.width-50, 18, "", style2);
-    // this.refreshStats();
-    // this.pointsText.fixedToCamera = true;
-    // this.fleasText.fixedToCamera = true;
-    
+    var style1 = { font: "26px Arial", fill: "#00ff00"};
+    var t1 = this.game.add.text(this.game.width - 125, this.game.height - 400, "Points:", style1);
+    t1.fixedToCamera = true;
+    this.pointsText = this.game.add.text(this.game.width - 40, this.game.height - 400, '', style1);
+    this.pointsText.fixedToCamera = true;
+    this.refreshStats();
   },
   
   update: function() {
     //collision
     this.game.physics.arcade.collide(this.player, this.ground, () => {}, null, this);
     this.game.physics.arcade.collide(this.player, this.cherry, () => this.playerHit(this.cherry), null, this);
+    this.game.physics.arcade.collide(this.player, this.strawberry, () => this.playerHit(this.strawberry), null, this);
+    this.game.physics.arcade.collide(this.player, this.pear, () => this.playerHit(this.pear), null, this);
+
     
     //only respond to keys and keep the speed if the player is alive
     //we also don't want to do anything if the player is stopped for scratching or digging
@@ -103,8 +112,6 @@ InfiniteScroller.Game.prototype = {
         this.wrapping = true;
         
         //put everything back in the proper order
-        // this.game.world.bringToTop(this.grass);
-        // this.game.world.bringToTop(this.cart);
         this.game.world.bringToTop(this.ground);
       }
       else if(this.player.x >= this.game.width) {
@@ -132,11 +139,14 @@ InfiniteScroller.Game.prototype = {
   },
   //show updated stats values
   refreshStats: function() {
-    // this.pointsText.text = this.points;
-    // this.fleasText.text = this.maxScratches - this.scratches;
+    this.pointsText.text = this.points;
   },
   playerHit: function(objectHit) {
-    // show text on screen
+    // TODO: show animation on screen
+
+    // add points
+    this.points += 10;
+    this.refreshStats();
     // destroy the sprite
     objectHit.destroy();
     // if(this.player.body.touching.right) {
@@ -161,8 +171,8 @@ InfiniteScroller.Game.prototype = {
 
   render: function()
     {
-    // this.game.debug.spriteBounds(this.cherry)
-    // this.game.debug.spriteInfo(this.cherry, 0, 100)
+    // if (this.cherry) this.game.debug.spriteBounds(this.cherry)
+    // if (this.cherry) this.game.debug.spriteInfo(this.cherry, 0, 100)
 
     // this.game.debug.spriteBounds(this.player)
     // this.game.debug.spriteInfo(this.player, 500, 100)
