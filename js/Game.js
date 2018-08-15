@@ -62,6 +62,9 @@ InfiniteScroller.Game.prototype = {
     this.points = 0;
     this.wrapping = true;
     this.stopped = false;
+
+    // add spacebar as valid key
+    this.spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     
     //stats
     // var style1 = { font: "20px Arial", fill: "#ff0"};
@@ -89,7 +92,7 @@ InfiniteScroller.Game.prototype = {
     if(this.player.alive && !this.stopped) {
       
       this.player.body.velocity.x = 300;
-      
+
       //We do a little math to determine whether the game world has wrapped around.
       //If so, we want to destroy everything and regenerate, so the game will remain random
       if(!this.wrapping && this.player.x < this.game.width) {
@@ -107,17 +110,19 @@ InfiniteScroller.Game.prototype = {
       else if(this.player.x >= this.game.width) {
         this.wrapping = false;
       }
-      
+
       //take the appropriate action for swiping up or pressing up arrow on keyboard
       //we don't wait until the swipe is finished (this.swipe.isUp),
       //  because of latency problems (it takes too long to jump before hitting a flea)
-      if (this.swipe.isDown && (this.swipe.positionDown.y > this.swipe.position.y)) {
-        this.playerJump();
+
+      if(this.player.body.velocity.y === 0){
+        this.player.angle = 0;
       }
-      else if (this.cursors.up.isDown) {
-        this.playerJump();
+
+      if (this.spaceBar.isDown) {
+        this.playerJump()
       }
-    
+
       //The game world is infinite in the x-direction, so we wrap around.
       //We subtract padding so the player will remain in the middle of the screen when
         //wrapping, rather than going to the end of the screen first.
@@ -131,7 +136,6 @@ InfiniteScroller.Game.prototype = {
     // this.fleasText.text = this.maxScratches - this.scratches;
   },
   playerHit: function(objectHit) {
-    console.log('hit cherry')
     // show text on screen
     // destroy the sprite
     objectHit.destroy();
@@ -145,10 +149,14 @@ InfiniteScroller.Game.prototype = {
   },
 
   playerJump: function() {
+     //rotate sprite when in the air
+     this.player.angle = -25;
     //when the ground is a sprite, we need to test for "touching" instead of "blocked"
     if(this.player.body.touching.down) {
       this.player.body.velocity.y -= 700;
     }    
+
+   
   },
 
   render: function()
