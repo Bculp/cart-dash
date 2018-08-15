@@ -16,7 +16,7 @@ InfiniteScroller.Preload.prototype = {
     // this.load.spritesheet('dog', 'http://localhost:5001/resources/dog_walk.png', 122, 92, 2);
     this.load.image('cart', 'http://localhost:5001/resources/cart.svg');
     // add fruit
-    // this.load.spritesheet('fruit', 'http://localhost:5001/resources/fruit.png', 50, 80, 32)
+    this.load.spritesheet('fruit', 'http://localhost:5001/resources/fruit.png', 55, 67, 32)
     this.load.image('ground', 'http://localhost:5001/resources/ground.png');
     // this.load.image('grass', 'http://localhost:5001/resources/grassCopy.png');
     

@@ -15,12 +15,12 @@ InfiniteScroller.Game.prototype = {
     // adjust the position of the sprite
 
     // game height is 420. game width is 746.
-    this.cherry = this.game.add.sprite(this.game.width - 200, this.game.height - 320, 'fruit');
+    this.cherry = this.game.add.sprite(this.game.width - 100, this.game.height - 330, 'fruit');
     this.ground = this.add.tileSprite(0,this.game.height-70,this.game.world.width,70,'ground');
     
     //create player and walk animation
     this.player = this.game.add.sprite(this.game.width/4, this.game.height-90, 'cart');
-    this.player.scale.setTo(.25,.25)
+    this.player.scale.setTo(.20,.20)
     // this.player.animations.add('walk');
     
     //put everything in the correct order (the grass will be camoflauge),
@@ -81,7 +81,8 @@ InfiniteScroller.Game.prototype = {
   
   update: function() {
     //collision
-    this.game.physics.arcade.collide(this.player, this.ground, this.playerHit, null, this);
+    this.game.physics.arcade.collide(this.player, this.ground, () => {}, null, this);
+    this.game.physics.arcade.collide(this.player, this.cherry, () => this.playerHit(this.cherry), null, this);
     
     //only respond to keys and keep the speed if the player is alive
     //we also don't want to do anything if the player is stopped for scratching or digging
@@ -129,10 +130,14 @@ InfiniteScroller.Game.prototype = {
     // this.pointsText.text = this.points;
     // this.fleasText.text = this.maxScratches - this.scratches;
   },
-  playerHit: function(player, blockedLayer) {
-    if(player.body.touching.right) {
+  playerHit: function(objectHit) {
+    console.log('hit cherry')
+    // show text on screen
+    // destroy the sprite
+    objectHit.destroy();
+    // if(this.player.body.touching.right) {
       //can add other functionality here for extra obstacles later
-    }
+    // }
   },
 
   gameOver: function() {
@@ -148,6 +153,11 @@ InfiniteScroller.Game.prototype = {
 
   render: function()
     {
+    // this.game.debug.spriteBounds(this.cherry)
+    // this.game.debug.spriteInfo(this.cherry, 0, 100)
+
+    // this.game.debug.spriteBounds(this.player)
+    // this.game.debug.spriteInfo(this.player, 500, 100)
         //this.game.debug.text(this.game.time.fps || '--', 20, 70, "#00ff00", "40px Courier");   
     }
 };
